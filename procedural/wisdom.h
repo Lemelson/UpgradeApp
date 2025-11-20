@@ -33,4 +33,7 @@ void PrintSummary(const WisdomList& list, std::ostream& out);
 // Выводит содержимое контейнера в поток (например, файл).
 void PrintDetails(const WisdomList& list, std::ostream& out);
 
+// Выводит количество символов в содержании каждого элемента.
+void PrintContentLengths(const WisdomList& list, std::ostream& out);
+
 #endif // IZ1_PROCEDURAL_WISDOM_H
