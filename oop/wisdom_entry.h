@@ -7,10 +7,11 @@
 // Базовый класс "мудрости" для объектно-ориентированного варианта.
 class WisdomEntry {
 public:
-    explicit WisdomEntry(std::string content);
+    WisdomEntry(std::string content, std::string keeper);
     virtual ~WisdomEntry() = default;
 
     const std::string& Content() const;
+    const std::string& Keeper() const;
 
     virtual std::string TypeName() const = 0;
     virtual std::string OriginLabel() const = 0;
@@ -23,6 +24,7 @@ protected:
 
 private:
     std::string content_;
+    std::string keeper_;
 };
 
 #endif // IZ1_OOP_WISDOM_ENTRY_H

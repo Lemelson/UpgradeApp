@@ -8,13 +8,15 @@
 
 class Aphorism : public WisdomEntry {
 public:
-    Aphorism(std::string author, std::string content);
+    Aphorism(std::string author, std::string content, std::string keeper);
 
     std::string TypeName() const override;
     std::string OriginLabel() const override;
     const std::string& Origin() const override;
 
-    static std::unique_ptr<WisdomEntry> Create(const std::string& author, const std::string& content);
+    static std::unique_ptr<WisdomEntry> Create(const std::string& author,
+                                               const std::string& content,
+                                               const std::string& keeper);
 
 private:
     std::string author_;

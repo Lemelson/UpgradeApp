@@ -4,8 +4,8 @@
 
 #include <utility>
 
-Riddle::Riddle(std::string answer, std::string content)
-    : WisdomEntry(std::move(content)), answer_(std::move(answer)) {}
+Riddle::Riddle(std::string answer, std::string content, std::string keeper)
+    : WisdomEntry(std::move(content), std::move(keeper)), answer_(std::move(answer)) {}
 
 std::string Riddle::TypeName() const {
     return "Загадка";
@@ -19,8 +19,10 @@ const std::string& Riddle::Origin() const {
     return answer_;
 }
 
-std::unique_ptr<WisdomEntry> Riddle::Create(const std::string& answer, const std::string& content) {
-    return std::make_unique<Riddle>(answer, content);
+std::unique_ptr<WisdomEntry> Riddle::Create(const std::string& answer,
+                                            const std::string& content,
+                                            const std::string& keeper) {
+    return std::make_unique<Riddle>(answer, content, keeper);
 }
 
 namespace {

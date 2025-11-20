@@ -26,11 +26,12 @@ bool WisdomFactory::Register(std::string type_name, Creator creator) {
 
 std::unique_ptr<WisdomEntry> WisdomFactory::Create(std::string_view type_name,
                                                    const std::string& origin,
-                                                   const std::string& content) {
+                                                   const std::string& content,
+                                                   const std::string& keeper) {
     std::lock_guard<std::mutex> lock(RegistryMutex());
     auto it = Registry().find(std::string(type_name));
     if (it == Registry().end()) {
         return nullptr;
     }
-    return it->second(origin, content);
+    return it->second(origin, content, keeper);
 }

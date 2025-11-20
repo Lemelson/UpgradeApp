@@ -4,8 +4,8 @@
 
 #include <utility>
 
-Aphorism::Aphorism(std::string author, std::string content)
-    : WisdomEntry(std::move(content)), author_(std::move(author)) {}
+Aphorism::Aphorism(std::string author, std::string content, std::string keeper)
+    : WisdomEntry(std::move(content), std::move(keeper)), author_(std::move(author)) {}
 
 std::string Aphorism::TypeName() const {
     return "Афоризм";
@@ -19,8 +19,10 @@ const std::string& Aphorism::Origin() const {
     return author_;
 }
 
-std::unique_ptr<WisdomEntry> Aphorism::Create(const std::string& author, const std::string& content) {
-    return std::make_unique<Aphorism>(author, content);
+std::unique_ptr<WisdomEntry> Aphorism::Create(const std::string& author,
+                                              const std::string& content,
+                                              const std::string& keeper) {
+    return std::make_unique<Aphorism>(author, content, keeper);
 }
 
 namespace {

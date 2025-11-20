@@ -8,13 +8,15 @@
 
 class Proverb : public WisdomEntry {
 public:
-    Proverb(std::string country, std::string content);
+    Proverb(std::string country, std::string content, std::string keeper);
 
     std::string TypeName() const override;
     std::string OriginLabel() const override;
     const std::string& Origin() const override;
 
-    static std::unique_ptr<WisdomEntry> Create(const std::string& country, const std::string& content);
+    static std::unique_ptr<WisdomEntry> Create(const std::string& country,
+                                               const std::string& content,
+                                               const std::string& keeper);
 
 private:
     std::string country_;
