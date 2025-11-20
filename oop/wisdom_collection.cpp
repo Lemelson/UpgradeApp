@@ -31,6 +31,14 @@ void WisdomCollection::PrintContentLengths(std::ostream& out) const {
     }
 }
 
+void WisdomCollection::PrintAphorisms(std::ostream& out) const {
+    for (const auto& entry : items_) {
+        if (entry->TypeName() == "Афоризм") {
+            entry->Print(out);
+        }
+    }
+}
+
 const std::list<std::unique_ptr<WisdomEntry>>& WisdomCollection::Items() const {
     return items_;
 }

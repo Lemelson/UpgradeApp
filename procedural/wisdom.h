@@ -37,4 +37,7 @@ void PrintDetails(const WisdomList& list, std::ostream& out);
 // Выводит количество символов в содержании каждого элемента.
 void PrintContentLengths(const WisdomList& list, std::ostream& out);
 
+// Записывает в поток только афоризмы.
+void PrintAphorisms(const WisdomList& list, std::ostream& out);
+
 #endif // IZ1_PROCEDURAL_WISDOM_H

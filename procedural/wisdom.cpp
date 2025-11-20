@@ -194,3 +194,14 @@ void PrintContentLengths(const WisdomList& list, std::ostream& out) {
             << " -> символов: " << item.content.size() << '\n';
     }
 }
+
+void PrintAphorisms(const WisdomList& list, std::ostream& out) {
+    for (const auto& item : list.items) {
+        if (item.type == WisdomType::Aphorism) {
+            out << TypeLabel(item) << ", "
+                << OriginLabel(item) << ": " << item.origin << ", "
+                << "Содержание: " << item.content << ", "
+                << "Кладезь: " << item.keeper << '\n';
+        }
+    }
+}
