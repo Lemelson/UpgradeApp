@@ -1,6 +1,6 @@
-# ИЗ-1: «Кладезь мудрости» — Homework 06
+# ИЗ-1: «Кладезь мудрости» — Homework 07
 
-Шестая версия добавляет мультиметод: программа перебирает все пары элементов контейнера и формирует отдельный отчёт. Обработчики пар регистрируются в новых единицах компиляции, поэтому расширение не требует переписывать существующие файлы.
+Седьмая версия расширяет мультиметод: к базовым комбинациям (афоризм/пословица) добавлены обработчики для всех сочетаний с альтернативой «Загадка». Новые файлы подключаются отдельно, поэтому предыдущий код остаётся неизменным.
 
 ## Структура каталога
 ```text
@@ -23,7 +23,7 @@ c++ -std=c++17 procedural/main.cpp procedural/wisdom.cpp procedural/multimethod*
 c++ -std=c++17 oop/*.cpp -o oop/oop_app
 ./oop/oop_app tests/input3.txt tests/output_oop.txt tests/output_oop_aphorisms.txt tests/output_oop_pairs.txt
 
-# пример с загадкой (для мультиметода пока доступны только базовые комбинации)
+# пример с загадкой
 ./procedural/procedural_app tests/input6.txt tests/output_proc_riddle.txt tests/output_proc_riddle_aphorisms.txt tests/output_proc_riddle_pairs.txt
 ./oop/oop_app tests/input6.txt tests/output_oop_riddle.txt tests/output_oop_riddle_aphorisms.txt tests/output_oop_riddle_pairs.txt
 ```
@@ -51,6 +51,6 @@ c++ -std=c++17 oop/*.cpp -o oop/oop_app
 | `output_proc_aphorisms.txt`, `output_oop_aphorisms.txt` | Выборочный вывод только с афоризмами. |
 | `output_proc_pairs.txt`, `output_oop_pairs.txt` | Вывод мультиметода на примере `input3.txt`. |
 | `output_proc_riddle_aphorisms.txt`, `output_oop_riddle_aphorisms.txt` | Демонстрация фильтрации на наборе с загадкой. |
-| `output_proc_riddle_pairs.txt`, `output_oop_riddle_pairs.txt` | Поведение мультиметода на наборе с загадкой (комбинации с загадками пока не поддерживаются). |
+| `output_proc_riddle_pairs.txt`, `output_oop_riddle_pairs.txt` | Комбинации мультиметода на наборе с загадкой (включая новые обработчики). |
 
 Эти файлы подтверждают корректность нового функционала и сохраняют совместимость с прежними проверками.
