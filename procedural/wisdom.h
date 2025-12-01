@@ -8,13 +8,14 @@
 // Тип мудрости, используемый для выбора формата вывода.
 enum class WisdomType {
     Aphorism,
-    Proverb
+    Proverb,
+    Riddle
 };
 
 // Структура для представления одного элемента "Кладезя мудрости".
 struct Wisdom {
     WisdomType type;
-    std::string origin;   // Автор (для афоризма) или страна (для пословицы).
+    std::string origin;   // Автор (для афоризма), страна (для пословицы) или ответ (для загадки).
     std::string content;  // Основное содержание.
 };
 

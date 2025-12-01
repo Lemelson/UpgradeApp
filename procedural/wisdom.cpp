@@ -60,6 +60,7 @@ bool ParseLine(std::string_view line_view, Wisdom& entry, std::string& error_mes
 
     constexpr std::string_view aphorism_token = "aphorism";
     constexpr std::string_view proverb_token = "proverb";
+    constexpr std::string_view riddle_token = "riddle";
 
     std::size_t pos = 0;
     WisdomType type;
@@ -71,14 +72,18 @@ bool ParseLine(std::string_view line_view, Wisdom& entry, std::string& error_mes
                (line_view.size() == proverb_token.size() || std::isspace(static_cast<unsigned char>(line_view[proverb_token.size()])))) {
         type = WisdomType::Proverb;
         pos = proverb_token.size();
+    } else if (line_view.substr(0, riddle_token.size()) == riddle_token &&
+               (line_view.size() == riddle_token.size() || std::isspace(static_cast<unsigned char>(line_view[riddle_token.size()])))) {
+        type = WisdomType::Riddle;
+        pos = riddle_token.size();
     } else {
-        error_message = "Unknown entry type. Expected 'aphorism' or 'proverb'.";
+        error_message = "Unknown entry type. Expected 'aphorism', 'proverb', or 'riddle'.";
         return false;
     }
 
     std::string origin;
     if (!ExtractQuoted(line_view, pos, origin)) {
-        error_message = "Unable to parse quoted origin (author or country).";
+        error_message = "Unable to parse quoted attribute (author, country, or answer).";
         return false;
     }
 
@@ -109,6 +114,8 @@ const char* TypeLabel(const Wisdom& item) {
             return "Тип: Афоризм";
         case WisdomType::Proverb:
             return "Тип: Пословица";
+        case WisdomType::Riddle:
+            return "Тип: Загадка";
     }
     return "Тип: Неизвестно"; // should never happen
 }
@@ -119,6 +126,8 @@ const char* OriginLabel(const Wisdom& item) {
             return "Автор";
         case WisdomType::Proverb:
             return "Страна";
+        case WisdomType::Riddle:
+            return "Ответ";
     }
     return "Источник";
 }
