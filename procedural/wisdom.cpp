@@ -93,6 +93,12 @@ bool ParseLine(std::string_view line_view, Wisdom& entry, std::string& error_mes
         return false;
     }
 
+    std::string keeper;
+    if (!ExtractQuoted(line_view, pos, keeper)) {
+        error_message = "Unable to parse quoted keeper (author or народ).";
+        return false;
+    }
+
     while (pos < line_view.size()) {
         if (!std::isspace(static_cast<unsigned char>(line_view[pos]))) {
             error_message = "Unexpected trailing characters after content.";
@@ -104,6 +110,7 @@ bool ParseLine(std::string_view line_view, Wisdom& entry, std::string& error_mes
     entry.type = type;
     entry.origin = std::move(origin);
     entry.content = std::move(content);
+    entry.keeper = std::move(keeper);
 
     return true;
 }
@@ -174,7 +181,8 @@ void PrintDetails(const WisdomList& list, std::ostream& out) {
     for (const auto& item : list.items) {
         out << TypeLabel(item) << ", "
             << OriginLabel(item) << ": " << item.origin << ", "
-            << "Содержание: " << item.content << '\n';
+            << "Содержание: " << item.content << ", "
+            << "Кладезь: " << item.keeper << '\n';
     }
 }
 

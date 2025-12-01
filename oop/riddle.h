@@ -8,13 +8,15 @@
 
 class Riddle : public WisdomEntry {
 public:
-    Riddle(std::string answer, std::string content);
+    Riddle(std::string answer, std::string content, std::string keeper);
 
     std::string TypeName() const override;
     std::string OriginLabel() const override;
     const std::string& Origin() const override;
 
-    static std::unique_ptr<WisdomEntry> Create(const std::string& answer, const std::string& content);
+    static std::unique_ptr<WisdomEntry> Create(const std::string& answer,
+                                               const std::string& content,
+                                               const std::string& keeper);
 
 private:
     std::string answer_;

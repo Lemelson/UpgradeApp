@@ -60,6 +60,7 @@ bool ParseLine(std::string_view line_view,
                std::string& type,
                std::string& origin,
                std::string& content,
+               std::string& keeper,
                std::string& error) {
     line_view = TrimView(line_view);
     if (line_view.empty()) {
@@ -82,6 +83,11 @@ bool ParseLine(std::string_view line_view,
 
     if (!ExtractQuoted(line_view, pos, content)) {
         error = "Unable to parse quoted content.";
+        return false;
+    }
+
+    if (!ExtractQuoted(line_view, pos, keeper)) {
+        error = "Unable to parse quoted keeper.";
         return false;
     }
 
@@ -113,8 +119,9 @@ bool LoadFromFile(const std::string& path, WisdomCollection& collection, std::st
         std::string type;
         std::string origin;
         std::string content;
+        std::string keeper;
         std::string parse_error;
-        if (!ParseLine(line, type, origin, content, parse_error)) {
+        if (!ParseLine(line, type, origin, content, keeper, parse_error)) {
             if (!TrimView(line).empty()) {
                 std::ostringstream builder;
                 builder << "Error in line " << line_number << ": " << parse_error;
@@ -128,7 +135,7 @@ bool LoadFromFile(const std::string& path, WisdomCollection& collection, std::st
             continue;
         }
 
-        auto entry = WisdomFactory::Create(type, origin, content);
+        auto entry = WisdomFactory::Create(type, origin, content, keeper);
         if (!entry) {
             std::ostringstream builder;
             builder << "Error in line " << line_number << ": Unknown type '" << type << "'.";
