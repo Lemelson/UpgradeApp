@@ -16,6 +16,7 @@ public:
 
     void PrintSummary(std::ostream& out) const;
     void PrintDetails(std::ostream& out) const;
+    void PrintContentLengths(std::ostream& out) const;
 
     const std::list<std::unique_ptr<WisdomEntry>>& Items() const;
 

@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     }
 
     collection.PrintSummary(std::cout);
+    collection.PrintContentLengths(std::cout);
 
     std::ofstream output(output_path);
     if (!output.is_open()) {

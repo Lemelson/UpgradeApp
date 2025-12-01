@@ -177,3 +177,12 @@ void PrintDetails(const WisdomList& list, std::ostream& out) {
             << "Содержание: " << item.content << '\n';
     }
 }
+
+void PrintContentLengths(const WisdomList& list, std::ostream& out) {
+    out << "Количество символов в содержании по каждому элементу:\n";
+    std::size_t index = 1;
+    for (const auto& item : list.items) {
+        out << index++ << ". " << TypeLabel(item)
+            << " -> символов: " << item.content.size() << '\n';
+    }
+}

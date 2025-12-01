@@ -22,6 +22,15 @@ void WisdomCollection::PrintDetails(std::ostream& out) const {
     }
 }
 
+void WisdomCollection::PrintContentLengths(std::ostream& out) const {
+    out << "Количество символов в содержании по каждому элементу:\n";
+    std::size_t index = 1;
+    for (const auto& entry : items_) {
+        out << index++ << ". Тип: " << entry->TypeName()
+            << " -> символов: " << entry->Content().size() << '\n';
+    }
+}
+
 const std::list<std::unique_ptr<WisdomEntry>>& WisdomCollection::Items() const {
     return items_;
 }
