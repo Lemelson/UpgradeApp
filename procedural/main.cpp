@@ -4,13 +4,14 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <input.txt> <output.txt>" << std::endl;
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " <input.txt> <output.txt> <aphorisms.txt>" << std::endl;
         return 1;
     }
 
     const std::string input_path = argv[1];
     const std::string output_path = argv[2];
+    const std::string aphorisms_path = argv[3];
 
     WisdomList list;
     std::string error;
@@ -29,5 +30,13 @@ int main(int argc, char* argv[]) {
     }
 
     PrintDetails(list, output);
+
+    std::ofstream aphorisms_output(aphorisms_path);
+    if (!aphorisms_output.is_open()) {
+        std::cerr << "Unable to open aphorisms file: " << aphorisms_path << std::endl;
+        return 1;
+    }
+
+    PrintAphorisms(list, aphorisms_output);
     return 0;
 }
