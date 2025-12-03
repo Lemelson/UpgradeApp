@@ -1,56 +1,100 @@
-# ИЗ-1: «Кладезь мудрости» — Homework 06
+# ИЗ-1: «Кладезь мудрости» — Homework 07
 
-Шестая версия добавляет мультиметод: программа перебирает все пары элементов контейнера и формирует отдельный отчёт. Обработчики пар регистрируются в новых единицах компиляции, поэтому расширение не требует переписывать существующие файлы.
+Седьмая версия программы демонстрирует полную реализацию мультиметода с поддержкой всех комбинаций альтернатив (афоризм, пословица, загадка). Архитектура основана на паттерне «регистрация обработчиков», что позволяет расширять функциональность без изменения существующего кода.
 
 ## Структура каталога
 ```text
 ./
-├── procedural/
-├── oop/
-├── tests/
+├── procedural/          # процедурная реализация
+│   ├── wisdom.{h,cpp}   # базовая функциональность
+│   ├── multimethod.{h,cpp}              # ядро мультиметода
+│   ├── multimethod_handlers_basic.cpp   # обработчики афоризм/пословица
+│   ├── multimethod_handlers_riddle.cpp  # обработчики с загадкой
+│   └── main.cpp
+├── oop/                 # объектно-ориентированная реализация
+│   ├── wisdom_*.{h,cpp} # классы и фабрика
+│   ├── aphorism.*, proverb.*, riddle.*  # альтернативы
+│   ├── multimethod.{h,cpp}              # ядро мультиметода
+│   ├── multimethod_handlers_basic.cpp   # обработчики афоризм/пословица
+│   ├── multimethod_handlers_riddle.cpp  # обработчики с загадкой
+│   └── main.cpp
+├── tests/               # тестовые данные и эталоны
+├── CHANGES.md           # история изменений с анализом
 └── README.md
 ```
 
 ## Сборка и запуск
+
 Команды выполняются в корне каталога.
 
 ```bash
 # процедурная версия
-c++ -std=c++17 procedural/main.cpp procedural/wisdom.cpp procedural/multimethod*.cpp -o procedural/procedural_app
-./procedural/procedural_app tests/input3.txt tests/output_proc.txt tests/output_proc_aphorisms.txt tests/output_proc_pairs.txt
+c++ -std=c++17 procedural/main.cpp procedural/wisdom.cpp procedural/multimethod*.cpp \
+    -o procedural/procedural_app
+./procedural/procedural_app tests/input3.txt tests/output_proc.txt \
+    tests/output_proc_aphorisms.txt tests/output_proc_pairs.txt
 
 # объектно-ориентированная версия
 c++ -std=c++17 oop/*.cpp -o oop/oop_app
-./oop/oop_app tests/input3.txt tests/output_oop.txt tests/output_oop_aphorisms.txt tests/output_oop_pairs.txt
+./oop/oop_app tests/input3.txt tests/output_oop.txt \
+    tests/output_oop_aphorisms.txt tests/output_oop_pairs.txt
 
-# пример с загадкой (для мультиметода пока доступны только базовые комбинации)
-./procedural/procedural_app tests/input6.txt tests/output_proc_riddle.txt tests/output_proc_riddle_aphorisms.txt tests/output_proc_riddle_pairs.txt
-./oop/oop_app tests/input6.txt tests/output_oop_riddle.txt tests/output_oop_riddle_aphorisms.txt tests/output_oop_riddle_pairs.txt
+# пример с загадкой
+./procedural/procedural_app tests/input6.txt tests/output_proc_riddle.txt \
+    tests/output_proc_riddle_aphorisms.txt tests/output_proc_riddle_pairs.txt
 ```
 
 ## Формат входного файла
-Строки соответствуют спецификации Homework04:
 ```
 <type> "<origin>" "<content>" "<keeper>"
 ```
+- `type`: `aphorism`, `proverb` или `riddle`
+- `origin`: автор (афоризм), страна (пословица) или ответ (загадка)
+- `content`: текст мудрости
+- `keeper`: хранитель (автор кладези или «народ»)
 
 ## Аргументы командной строки
-Программа принимает четыре аргумента: входной файл, полный вывод, файл для афоризмов и файл для результатов мультиметода. Отчет о длинах по-прежнему выводится в стандартный поток.
+1. Входной файл с данными
+2. Файл полного вывода
+3. Файл только с афоризмами
+4. Файл результатов мультиметода
+
+Отчёт о длинах содержимого выводится в стандартный поток.
+
+## Архитектура мультиметода
+
+### Паттерн «Регистрация обработчиков»
+Вместо классической двойной диспетчеризации применён подход с регистрацией обработчиков:
+
+```cpp
+// Каждый обработчик — отдельная функция
+bool AphorismThenProverb(const Wisdom& first, const Wisdom& second, std::string& phrase) {
+    if (first.type == WisdomType::Aphorism && second.type == WisdomType::Proverb) {
+        phrase = "Афоризм задаёт тон пословице.";
+        return true;
+    }
+    return false;
+}
+
+// Регистрация при старте программы
+RegisterPairHandler(&AphorismThenProverb);
+```
+
+### Преимущества подхода
+1. **Расширяемость**: новые комбинации добавляются в отдельных файлах
+2. **Модульность**: обработчики не зависят друг от друга
+3. **Open/Closed**: существующий код не изменяется при добавлении новых типов
 
 ## Метрики
-| Версия | Файлов | Примерно строк кода |
+| Версия | Файлов | Строк кода |
 | --- | --- | --- |
-| Процедурная | 3 | 294 |
-| Объектно-ориентированная | 15 | 572 |
+| Процедурная | 6 | ~400 |
+| Объектно-ориентированная | 18 | ~700 |
 
 ## Тестовые данные
 | Файл | Назначение |
 | --- | --- |
-| `input1.txt` … `input6.txt` | Набор сценариев, использовавшийся в предыдущих версиях. |
-| `output_proc.txt`, `output_oop.txt` | Полные результаты обработки. |
-| `output_proc_aphorisms.txt`, `output_oop_aphorisms.txt` | Выборочный вывод только с афоризмами. |
-| `output_proc_pairs.txt`, `output_oop_pairs.txt` | Вывод мультиметода на примере `input3.txt`. |
-| `output_proc_riddle_aphorisms.txt`, `output_oop_riddle_aphorisms.txt` | Демонстрация фильтрации на наборе с загадкой. |
-| `output_proc_riddle_pairs.txt`, `output_oop_riddle_pairs.txt` | Поведение мультиметода на наборе с загадкой (комбинации с загадками пока не поддерживаются). |
-
-Эти файлы подтверждают корректность нового функционала и сохраняют совместимость с прежними проверками.
+| `input1.txt` – `input6.txt` | Тестовые сценарии |
+| `output_*_pairs.txt` | Результаты мультиметода |
+| `output_*_riddle_pairs.txt` | Комбинации с загадкой |
+| `output_*_aphorisms.txt` | Выборочный вывод афоризмов |
